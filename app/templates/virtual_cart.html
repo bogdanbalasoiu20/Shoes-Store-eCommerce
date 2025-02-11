@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <link rel="stylesheet" href="{% static 'virtual_cart.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>My Cart</title>
+</head>
+<body>
+    <header>
+        <h1>My Cart</h1>
+    </header>
+
+    <nav class="navbar">
+        <div class='navdiv'>
+            <ul>
+                {% comment %} <li><a href="{% url 'home' %}">Home</a></li> {% endcomment %}
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+                <li><a href="{% url 'offers' %}">Offers</a></li>
+                <li><a href="{% url 'product_list' %}">Products</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                {% endif %}
+                {%if user.is_staff%}
+                <li><a href="{% url 'create_product'%}">Add product</li>
+                <li><a href="{% url 'create_promotion'%}">Add promotion</li>
+                {%endif%}
+            </ul>
+            <div class='nav-buttons'>
+                {% if user.is_authenticated %}
+                    <button><a href="{% url 'logout' %}">Logout</a></button>
+                {% else %}
+                    <button><a href="{% url 'login' %}">Login</a></button>
+                    <button><a href="{% url 'create_user' %}">SignUp</a></button>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Secțiune pentru sortare și numărul de produse -->
+    <div class="sorting-section">
+        <select id='sorting' name='sorting'>
+            <option value='' selected disabled>Sort by</option>
+            <option value="sort_by_name">Name</option>
+            <option value="sort_by_price">Price</option>
+        </select>
+        <div id='nr_of_products'></div>
+    </div>
+
+    <main>
+        <!-- Conținutul principal al paginii -->
+    </main>
+
+    <footer>
+        <p id="final_price">Total: 0 RON</p>
+        <button id="place_order">Place Order</button>
+    </footer>
+    <script src="{% static 'virtual_cart.js' %}"></script>
+</body>
+</html>

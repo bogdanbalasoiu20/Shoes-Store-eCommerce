@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Discount Code</title>
+</head>
+<body>
+    <h2>Congrats, {{username}}</h2>
+    <p>You won a <b>80%</b> discount code for every shoes type on our site</p>
+    <p>The code is <b>{{code}}</b></p>
+    <p>Remember that you can use the code <b>only once</b> and is available until {{end_date}}</p>
+    <p>Find your favorite shoes <a href="{{domain}}{% url 'product_list' %}">here</a></p>
+</body>
+</html>

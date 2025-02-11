@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>offers</title>
+    <link rel="stylesheet" href="{% static 'all_offers.css' %}">
+</head>
+<body>
+    <header>
+        <h1>See our offers</h1>
+    </header>
+
+    <nav class="navbar">
+        <div class='navdiv'>
+        <ul>
+            {% comment %} <li><a href="{% url 'home' %}">Home</a></li> {% endcomment %}
+            <li><a href="{% url 'virtual_cart' %}">Cart</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li><a href="{% url 'product_list' %}">Products</a></li>
+            {%if user.is_authenticated%}
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+            {%endif%}
+            {%if user.is_staff%}
+            <li><a href="{% url 'create_product'%}">Add product</li>
+            <li><a href="{% url 'create_promotion'%}">Add promotion</li>
+            {%endif%}
+        </ul>
+            <div class='nav-buttons'>
+            {% if user.is_authenticated %}
+                <button><a href="{% url 'logout' %}">Logout</a></button>
+            {% else %}
+                <button><a href="{% url 'login' %}">Login</a></button>
+                <button><a href="{% url 'create_user' %}">SignUp</a></button>
+            {% endif %}
+            </div>
+    </div>
+    </nav>
+    
+    <main>
+        {% if active_offers %}
+    {% for offer in active_offers %}
+        <div class='offer'>
+            <h2>{{ offer.name }}</h2>
+            <p><span>{{ offer.discount_value }}</span>{% if offer.discount_type == 'percentage' %}% Discount{% else %}RON Discount{% endif %}</p>
+            <p>Valability: <span>{{ offer.start_date }}</span> - <span>{{ offer.end_date }}</span></p>
+            <p>Applied on:
+                {% if offer.category.exists %}
+                    Categories: 
+                    <span>{% for category in offer.category.all %}{{ category.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+                {% elif offer.product.exists %}
+                    Products: 
+                    <span>{% for product in offer.product.all %}{{ product.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+                {% else %}
+                    None
+                {% endif %}
+            </p>
+        </div>
+    {% endfor %}
+{% endif %}
+
+    </main>
+
+    <footer>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'product_detail.css' %}">
+    <title>{{ product.name }} - Details</title>
+
+    <script>
+        window.onload = function() {
+            var btn_virtual_cart = document.getElementById("btn_virtual_cart");
+            var btn_plus = document.getElementById('btn+');
+            var btn_minus = document.getElementById('btn-');
+            var btn_remove = document.getElementById('btn_remove');
+            var currentQuantity = parseInt(document.getElementById('quantity').value,10); // Cantitatea de start
+    
+            // Buton "+" pentru a crește cantitatea
+            btn_plus.onclick = function() {
+                var sizeDropdown = document.getElementById("sizes");
+                var selectedSize = sizeDropdown.value;
+                var message = document.getElementById('message');
+
+                if (!selectedSize) {
+                    message.style.display='block';
+                    message.innerText='Please select a size first';
+                    message.style.color='red';
+                    return;
+                }
+                message.style.display='none';
+    
+                //var selectedOption = sizeDropdown.options[sizeDropdown.selectedIndex];
+                //var stock = parseInt(selectedOption.getAttribute('data-stock'));
+                
+                //creste cantitatea
+                currentQuantity++;
+                document.getElementById('quantity').value=currentQuantity;
+                
+            };
+    
+            // Buton "-" pentru a descrește cantitatea
+            btn_minus.onclick = function() {
+                var sizeDropdown = document.getElementById("sizes");
+                var selectedSize = sizeDropdown.value;
+                var message = document.getElementById('message');
+
+                if (!selectedSize) {
+                    message.style.display='block';
+                    message.innerText='Please select a size first';
+                    message.style.color='red';
+                    return;
+                }
+                message.style.display='none';
+                
+                //scad cantitatea  
+                if (currentQuantity > 1) {
+                    currentQuantity--;
+                    document.getElementById('quantity').value=currentQuantity;
+                } 
+            };
+    
+            // Buton pentru adăugarea în coș
+            btn_virtual_cart.onclick = function() {
+                currentQuantity=parseInt(document.getElementById('quantity').value,10); //iau cantitatea noua dupa actualizare
+
+                var sizeDropdown = document.getElementById("sizes");
+                var selectedSize = sizeDropdown.value;
+                var message = document.getElementById('message');
+
+                if (!selectedSize) {
+                    message.style.display='block';
+                    message.innerText='Please select a size before adding to cart';
+                    message.style.color='red';
+                    return;
+                }
+                message.style.display='none';
+
+    
+                // Iau informațiile despre produs
+                var productId = this.getAttribute("data-id");
+                var productName = this.getAttribute("data-name");
+                var productPrice=this.getAttribute("data-price");
+    
+                // Creez obiectul produsului
+                var product_in_cart = {
+                    id: productId,
+                    name: productName,
+                    size: selectedSize,
+                    price:productPrice,
+                    quantity: currentQuantity // Setez cantitatea curentă
+                };
+    
+                // Preiau coșul existent din localStorage sau creez unul nou
+                var virtualCart = JSON.parse(localStorage.getItem("virtualCart")) || [];
+    
+                // Verific dacă produsul este deja în coș
+                var existingProduct = virtualCart.find(function(x) {
+                    return x.id === product_in_cart.id && x.size === product_in_cart.size;
+                });
+    
+                if (existingProduct) {
+                    // Actualizez cantitatea produsului existent
+                    existingProduct.quantity += currentQuantity;
+                } else {
+                    // Adaug produsul în coș
+                    virtualCart.push(product_in_cart);
+                }
+    
+                // Salvez coșul actualizat
+                localStorage.setItem("virtualCart", JSON.stringify(virtualCart));
+                console.log(virtualCart);
+    
+                // Resetez cantitatea curentă
+                currentQuantity = 1;
+                document.getElementById("quantity").value = currentQuantity;
+
+                
+                message.style.display='block';
+                message.innerText='The product is added in cart'
+                message.style.color='green';
+
+
+                //apare butonul de remove dupa ce am adaugat produsul in cos
+                var btn_remove=document.getElementById('btn_remove');
+                btn_remove.style.display='block';
+
+            
+            };
+
+            btn_remove.onclick=function(){
+                var productId=this.getAttribute('data-id');
+                var sizeDropdown = document.getElementById("sizes");
+                var selectedSize = sizeDropdown.value;
+                var message=document.getElementById('message');
+
+                var virtualCart=JSON.parse(localStorage.getItem('virtualCart')) || []; //JSON.parse converste lista de stringuri JSON intr-un array de obiecte js
+
+                //memorez in productIndex prima pozitie a produsului meu in cosul de cumparaturi, daca nu il gasesc se returneaza -1 by default
+                var productIndex=virtualCart.findIndex(function(x){
+                    return x.id === productId && x.size===selectedSize;
+                });
+
+
+                if (productIndex != -1){
+                    virtualCart.splice(productIndex,1); //elimin produsul din cos
+
+                    message.style.display='block';
+                    message.innerText='The product is removed from cart'
+                    message.style.color='red';
+
+                    //dupa ce sterg produsul din cos dispare butonul
+                    btn_remove.style.display='none';
+
+                    localStorage.setItem('virtualCart',JSON.stringify(virtualCart)); //stringify transforma lista de obiecte js intr-o lista de stringuri in format JSON
+                    console.log(virtualCart)
+                }
+            };
+        };
+    </script>
+    
+
+</head>
+<body>
+    <header>
+        <h1>Shoes Store eCommerce</h1>
+    </header>
+
+    <nav class="navbar">
+        <div class='navdiv'>
+        <ul>
+            {% comment %} <li><a href="{% url 'home' %}">Home</a></li> {% endcomment %}
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li><a href="{% url 'virtual_cart' %}">Cart</a></li>
+            <li><a href="{% url 'offer_page' %}">Offers</a></li>
+            {%if user.is_authenticated%}
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+            {%endif%}
+        </ul>
+            <div class='nav-buttons'>
+            {% if user.is_authenticated %}
+                <button><a href="{% url 'logout' %}">Logout</a></button>
+            {% else %}
+                <button><a href="{% url 'login' %}">Login</a></button>
+                <button><a href="{% url 'create_user' %}">SignUp</a></button>
+            {% endif %}
+            </div>
+    </div>
+    </nav>
+
+<main>
+    <a href="{% url 'product_list' %}" class="back-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        Back to product list
+    </a>
+
+    <img src="{{product.image.url}}" alt="{{product.name}}" width="400" height="450">
+    <h1>{{ product.name }}</h1>
+    <div class="price-container">
+        {% if price_after_offer == product.price %}
+            <p class="price">{{ product.price|floatformat:2 }} RON</p>
+        {% else %}
+            <p class="old-price">{{ product.price|floatformat:2 }} RON</p>
+            <p class="new-price">{{ price_after_offer|floatformat:2 }} RON</p>
+        {% endif %}
+    </div>
+    
+    <div id="size_quantity_container">
+        <select id="sizes" name="sizes">
+            <option value="" selected disabled>Select a size</option>
+            {% for size in sizes %}
+                <option value="{{ size }}" data-stock="{{ size_stock.size }}">{{ size }}</option>
+            {% endfor %}
+        </select>
+    
+        <button id="btn-">-</button>
+        <input type="number" id="quantity" name="quantity" min="1" value="1">
+        <button id="btn+">+</button>
+    </div>
+
+    <button data-id="{{product.id}}" data-name="{{product.name}}" data-price="{{price_after_offer|floatformat:2}}" id='btn_virtual_cart'>Add to cart</button>
+    <button id='btn_remove' data-id="{{product.id}}">remove from cart</button>
+
+    <div id='message'></div>
+    <details>
+        <summary>Description</summary>
+        <p>{{ product.description }}</p>
+    </details>
+
+    {%if price_after_offer != product.price %}
+    <details>
+        <summary>Applied offers</summary>
+        <ul>
+            {% for offer in offers %}
+                <li>{{ offer }}</li>
+            {% endfor %}
+        </ul>
+    </details>
+    {%endif%}
+
+
+    <details>
+        <summary>Details</summary>
+        <ul>
+            <li><strong>Brand:</strong> {{ product.brand }}</li>
+            <li><strong>Category:</strong> {{ product.category }}</li>
+        </ul>
+    </details>
+</main>
+
+</body>
+</html>

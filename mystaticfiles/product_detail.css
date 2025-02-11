@@ -1,0 +1,313 @@
+/* Container pentru select, butoane și input */
+#size_quantity_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Spațiu între elemente */
+    margin: 20px 0;
+}
+
+/* Stil pentru dropdown (select) */
+select {
+    width: 200px;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Stil pentru butoane + și - */
+button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Stil pentru inputul de cantitate */
+input[type="number"] {
+    width: 60px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Stiluri pentru butonul de adăugare în coș și altele, rămân aceleași */
+#btn_virtual_cart {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#btn_remove {
+    display: none; /* Asigură centrare similară */
+    margin: 20px auto; /* Aliniază în centru */
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Alte stiluri pentru imagine, titlu, descriere, etc., rămân aceleași */
+img {
+    display: block;
+    margin: 20px auto;
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+p {
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+}
+
+a {
+    display: block;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 16px;
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+/* Stil pentru mesaj */
+#message {
+    display: none; /* Se afișează doar la nevoie */
+    text-align: center; /* Text centrat */
+    margin: 20px auto; /* Centrare și spațiu de jur împrejur */
+    font-size: 16px; /* Dimensiune text */
+    color: #333; /* Culoare text */
+    padding: 10px;
+    background-color: #f9f9f9; /* Fundal deschis */
+    border: 1px solid #ccc; /* Margine subtilă */
+    border-radius: 4px; /* Colțuri rotunjite */
+    width: fit-content; /* Lățime ajustabilă în funcție de conținut */
+}
+
+
+details {
+    margin: 20px auto;
+    width: 80%;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+details summary {
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+}
+
+details[open] {
+    border-color: #4CAF50; /* Schimbă culoarea când este extins */
+    background-color: #e8f5e9;
+}
+
+details ul {
+    margin: 10px 0;
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+details li {
+    margin: 5px 0;
+    color: #666;
+}
+
+
+/* Stil pentru prețuri */
+.price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrează pe orizontală */
+    margin: 20px 0;
+    text-align: center; /* Asigură alinierea textului */
+}
+
+.price {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.new-price {
+    color: #d32f2f;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+
+.back-arrow {
+    position: fixed; /* Poziționare fixă pentru a rămâne vizibilă */
+    top: 60px; /* Sub bara de navigare */
+    left: 10px; /* Aproape de marginea stângă */
+    font-size: 16px; /* Dimensiune text */
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s;
+    z-index: 100; /* Deasupra altor elemente */
+}
+
+.back-arrow:hover {
+    color: #d32f2f;
+}
+
+.back-arrow svg {
+    margin-right: 8px; /* Spațiu între săgeată și text */
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.navbar{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.navdiv{
+    display: flex; 
+    align-items: center;
+    justify-content: space-between;
+}
+
+li{
+    list-style: none;
+    display: inline-block;
+}
+
+li a{
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 25px;
+}
+
+button a{
+    color: white;
+}
+
+li:hover {
+    background-color: #f0f0f0; /* Schimbă fundalul la hover */
+    border-radius: 5px; /* Colțuri rotunjite */
+}
+
+/* Efect de hover pe link */
+li:hover a {
+    color: #007BFF; /* Schimbă culoarea textului */
+}
+
+
+header {
+    background-color: #c8e1fc; /* Albastru intens */
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header > h1 {
+    color: #007BFF;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3; /* Albastru mai închis */
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px; /* Spațiu între butoane */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5; /* Fundal deschis */
+    color: #333; /* Text închis la culoare */
+}
+
+main {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Umbră subtilă */
+    border-radius: 8px; /* Colțuri rotunjite */
+}
+
+.nav-buttons button a {
+    color: white; /* Text alb */
+    text-decoration: none; /* Fără subliniere */
+    display: block; /* Asigură spațiere corectă în interiorul butonului */
+    width: 100%; /* Ocupă toată lățimea butonului */
+    height: 100%; /* Ocupă toată înălțimea butonului */
+    text-align: center; /* Centrează textul */
+}
+
+/* Stil pentru butoanele Login, Logout, Sign Up */
+.nav-buttons button {
+    padding: 5px 10px; /* Dimensiune compactă */
+    font-size: 14px; /* Text mai mic */
+    border-radius: 4px; /* Colțuri rotunjite */
+    background-color: #007BFF; /* Albastru */
+    border: none; /* Fără margine */
+    cursor: pointer;
+    display: inline-flex; /* Flex pentru aliniere */
+    align-items: center; /* Centrează pe verticală */
+    justify-content: center; /* Centrează pe orizontală */
+}
+
+.nav-buttons button:hover {
+    background-color: #0056b3; /* Albastru mai închis */
+}
+
+
+
+

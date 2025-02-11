@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ offer.name }} - Details</title>
+</head>
+<body>
+    <h1>{{ offer.name }}</h1>
+    {% if offer.discount_type == 'percentage'%}
+        <p>Discount: {{ offer.discount_value }}%</p>
+    {%else%}
+        <p>Discount: {{ offer.discount_value }} lei</p>
+    {% endif %}
+    <p>Duration: {{ offer.start_date }} - {{offer.end_date}}</p>
+    <p>Category:
+    {% for cat in categories%}
+    {{ cat.name }} {%if not forloop.last%}, {%endif%}
+    {%endfor%}
+    </p>
+</body>
+</html>

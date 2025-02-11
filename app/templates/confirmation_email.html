@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Confirmation</title>
+</head>
+<body>
+    <h2>Welcome, {{ first_name }} {{ last_name }}!</h2>
+    <p>Thank you for joining our site!</p>
+    <p>Your username is: <strong>{{ username }}</strong></p>
+    <p>Please confirm your email using the following link</p>
+    <p>
+        <a href="{{ url }}/email-confirmation/{{ code }}/">Confirm your email</a>
+    </p>
+</body>
+</html>

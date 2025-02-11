@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <link rel="stylesheet" href="{% static '403.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error 403</title>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ title|default:"Error 403" }}</h1>
+        <p>
+            Hello,{{username}}!
+        </p>
+        <div class="message">
+            {{ message|default:"Acces is denied" }}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>new product</title>
+    <link rel="stylesheet" href="{% static 'new_product.css' %}">
+</head>
+<body>
+    <header><h1>Create a new product</h1></header>
+
+    <nav class="navbar">
+        <div class='navdiv'>
+        <ul>
+            {% comment %} <li><a href="{% url 'home' %}">Home</a></li> {% endcomment %}
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li><a href="{% url 'virtual_cart' %}">Cart</a></li>
+            <li><a href="{% url 'offers' %}">Offers</a></li>
+            <li><a href="{% url 'product_list' %}">Products</a></li>
+            {%if user.is_authenticated%}
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+            {%endif%}
+            {%if user.is_staff%}
+            <li><a href="{% url 'create_promotion'%}">Add promotion</li>
+            {%endif%}
+        </ul>
+            <div class='nav-buttons'>
+            {% if user.is_authenticated %}
+                <button><a href="{% url 'logout' %}">Logout</a></button>
+            {% else %}
+                <button><a href="{% url 'login' %}">Login</a></button>
+                <button><a href="{% url 'create_user' %}">SignUp</a></button>
+            {% endif %}
+            </div>
+    </div>
+    </nav>
+<main>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add New Product</button>
+    </form>
+    
+</main>
+</body>
+</html>

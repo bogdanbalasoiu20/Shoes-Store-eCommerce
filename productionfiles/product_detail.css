@@ -1,0 +1,14 @@
+select {
+    width: 200px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+option {
+    padding: 5px;
+}
+
+#marked_in_cart{
+    display: none;
+    color: green;
+}

@@ -1,0 +1,371 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'product_list.css' %}">
+    <meta charset="UTF-8">
+    <title>Product List</title>
+</head>
+<body>
+    <header>
+        <h1>Shoes Store eCommerce</h1>
+    </header>
+
+    <nav class="navbar">
+        <div class='navdiv'>
+        <ul>
+            {% comment %} <li><a href="{% url 'home' %}">Home</a></li> {% endcomment %}
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li><a href="{% url 'virtual_cart' %}">Cart</a></li>
+            <li><a href="{% url 'offers' %}">Offers</a></li>
+            {%if user.is_authenticated%}
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+            {%endif%}
+            {%if user.is_staff%}
+            <li><a href="{% url 'create_product'%}">Add product</li>
+            <li><a href="{% url 'create_promotion'%}">Add promotion</li>
+            {%endif%}
+        </ul>
+            <div class='nav-buttons'>
+            {% if user.is_authenticated %}
+                <button><a href="{% url 'logout' %}">Logout</a></button>
+            {% else %}
+                <button><a href="{% url 'login' %}">Login</a></button>
+                <button><a href="{% url 'create_user' %}">SignUp</a></button>
+            {% endif %}
+            </div>
+    </div>
+    </nav>
+
+    <div class="container">
+        <!-- Coloana pentru filtre -->
+        <div class="filters">
+            <h2>Filters</h2>
+            <form action="{% url 'product_list' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Apply Filters</button>
+            </form>
+        </div>
+
+        <!-- Coloana pentru produse -->
+        <div class="product-list">
+            {% for item in product_data %}
+                <div class="prod" data-product-id="{{item.product.id}}">
+                    {% if item.product.image %}
+                        <img 
+                            src="{{ item.product.image.url }}" 
+                            alt="{{ item.product.name }}" 
+                            width="200" height="200" 
+                            class="product-image" 
+                            data-product-id="{{ item.product.id }}"
+                        >
+                    {% endif %}
+                    {% if item.offers %}
+                        <p>{{ item.product.name }} </p>
+                        <p>Old Price: {{ item.old_price|floatformat:2 }}</p>
+                        <p>New Price: {{ item.new_price|floatformat:2 }}</p>
+                        
+                        <select 
+                            class="size-dropdown" 
+                            data-product-id="{{ item.product.id }}" 
+                            name="sizes-{{ item.product.id }}"
+                        >
+                            <option value="" selected disabled>Select a size</option>
+                            {% for size in item.size %}
+                                <option value="{{ size }}">{{ size }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn_virtual_cart" data-product-id="{{ item.product.id }}" data-product-name="{{item.product.name}}" data-price="{{item.new_price}}">Add to cart</button>
+                        <input type="number" class="quantity" name="quantity" min="1" value="1" data-product-id="{{ item.product.id }}">
+                        <button class="btn_decrease" data-product-id="{{ item.product.id }}">-</button>
+                        <button class="btn_increase" data-product-id="{{ item.product.id }}">+</button>
+                        <button class="btn_remove" data-product-id="{{ item.product.id }}">Remove from cart</button>
+                        <div class="message" data-product-id="{{ item.product.id }}"></div>
+                    {% else %}
+                        <p>{{ item.product.name }}</p>
+                        <p>Price: {{ item.product.price|floatformat:2 }}</p>
+
+                        <select 
+                            class="size-dropdown" 
+                            data-product-id="{{ item.product.id }}" 
+                            name="sizes-{{ item.product.id }}"
+                        >
+                            <option value="" selected disabled>Select a size</option>
+                            {% for size in item.size %}
+                                <option value="{{ size }}">{{ size }}</option>
+                            {% endfor %}
+                        </select>
+                        
+                        <button class="btn_virtual_cart" data-product-id="{{ item.product.id }}" data-product-name="{{item.product.name}}" data-price="{{item.new_price}}">Add to cart</button>
+                        <input type="number" class="quantity" name="quantity" min="1" value="1" data-product-id="{{ item.product.id }}">
+                        <button class="btn_decrease" data-product-id="{{ item.product.id }}">-</button>
+                        <button class="btn_increase" data-product-id="{{ item.product.id }}">+</button>
+                        <button class="btn_remove" data-product-id="{{ item.product.id }}">Remove from cart</button>
+                        <div class="message" data-product-id="{{ item.product.id }}"></div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer>
+    <!-- Navigare pentru pagini -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+        </span>
+    </div>
+</footer>
+
+    <!-- Bannerul de ofertă -->
+    <div class="offer-banner" id="offerBanner">
+        50% Discount Offer!
+    </div>
+
+    <script>
+        window.onload = function() {
+            // Funcționalitate pentru redirecționarea la pagina de detalii
+            const productImages = document.querySelectorAll('.product-image');
+
+            productImages.forEach(function (image) {
+                // Adaug un listener pentru hover
+                image.addEventListener('mouseover', function () {
+                    this.style.transform = 'scale(1.1)';
+                    this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+                });
+
+                // Revenire la stilul inițial când mouse-ul pleacă
+                image.addEventListener('mouseout', function () {
+                    this.style.transform = 'scale(1)';
+                    this.style.boxShadow = 'none';
+                });
+
+                image.addEventListener('click', function () {
+                    const productId = this.getAttribute('data-product-id');
+                    window.location.href = `{% url 'product_detail' 0 %}`.replace('/0/', `/${productId}/`);
+                });
+            });
+
+            // Bannerul de ofertă
+            var userAuthenticated = "{{ user.is_authenticated|yesno:'true,false' }}";
+            if (userAuthenticated === "true") {
+                if (Math.random() < 0.3) {
+                    document.getElementById('offerBanner').style.display = 'block';
+                }
+
+                document.getElementById('offerBanner').addEventListener('click', function () {
+                    fetch("{% url 'grant_offer_permission' %}", { //fetch trimite o cerere HTTP, in acest caz de tip POST, catre server catre acel url din paranteze
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',  //{{ csrf_token }} inserează un token de securitate generat automat de Django pentru a proteja cererile POST
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ action: 'grant_permission' }) //este specificat corpul cererii HTTP, iar acest corp este un obiect JavaScript convertit într-un șir JSON. n acest caz, îi spui serverului că utilizatorul solicită o acțiune numită "grant_permission".Acest obiect reprezintă informația pe care vrei să o trimiți serverului.
+                    }).then(response => {
+                        window.location.href = "{% url 'offer_page' %}";
+                    });
+                });
+            }
+
+            var message = document.getElementById('message');
+            const addButtons=document.querySelectorAll('.btn_virtual_cart');
+            const removeButtons=document.querySelectorAll('.btn_remove');
+            const increaseButtons=document.querySelectorAll('.btn_increase');
+            const decreaseButtons=document.querySelectorAll('.btn_decrease');
+
+            addButtons.forEach(button=>{
+                button.addEventListener('click',function(){
+
+                    const productId = this.getAttribute('data-product-id');
+                    const productName=this.getAttribute('data-product-name');
+                    const productPrice = parseFloat(this.getAttribute('data-price')).toFixed(2);
+                    const sizeDropdown = document.querySelector(`.size-dropdown[data-product-id="${productId}"]`);
+                    const selectedSize = sizeDropdown.value;
+                    const currentQuantity = parseInt(document.querySelector(`.quantity[data-product-id="${productId}"]`).value) || 1;
+                    const quantityInput = document.querySelector(`.quantity[data-product-id="${productId}"]`);
+                    const message = document.querySelector(`.message[data-product-id="${productId}"]`); 
+                    const div_product=document.querySelector(`.prod[data-product-id="${productId}"]`);
+
+                    var virtualCart=JSON.parse(localStorage.getItem('virtualCart')) || [];
+                    
+                    if (selectedSize){
+                        console.log(`Product ${productId} added to cart with size: ${selectedSize}`);
+                        const remove_button=document.querySelector(`.btn_remove[data-product-id="${productId}"]`);
+                        remove_button.style.display='block';
+                    }else{
+                        console.log('select a size first')
+                        message.style.display='block';
+                        message.innerText='Please select a size before adding to cart';
+                        message.style.color='red';
+                        return;
+                    }
+                    message.style.display='none';
+
+                    var product_in_cart={
+                        id: productId,
+                        name: productName,
+                        size: selectedSize,
+                        price:productPrice,
+                        quantity: currentQuantity
+                        }
+
+                    var existingProduct = virtualCart.find(function(x) {
+                        return x.id === product_in_cart.id && x.size === product_in_cart.size;
+                    });
+
+                    if (existingProduct) {
+                        // Actualizez cantitatea produsului existent
+                        existingProduct.quantity += currentQuantity;
+                    } else {
+                        // Adaug produsul în coș
+                        virtualCart.push(product_in_cart);
+                        div_product.style.border="solid 3px green";
+                    }
+
+
+                    // Salvez coșul actualizat
+                    localStorage.setItem("virtualCart", JSON.stringify(virtualCart));
+                    console.log(virtualCart);
+        
+                    // Resetez cantitatea curentă
+                    quantityInput.value = 1;
+
+
+                });
+            });
+
+
+            removeButtons.forEach(button=>{
+                button.addEventListener('click',function(){
+                    const productId = this.getAttribute('data-product-id');
+                    const sizeDropdown = document.querySelector(`.size-dropdown[data-product-id="${productId}"]`);
+                    const selectedSize = sizeDropdown.value;
+                    const message = document.querySelector(`.message[data-product-id="${productId}"]`); 
+                    const div_product=document.querySelector(`.prod[data-product-id="${productId}"]`);
+
+                    var virtualCart=JSON.parse(localStorage.getItem('virtualCart')) || [];
+
+                    var productIndex=virtualCart.findIndex(function(x){
+                        return x.id === productId && x.size===selectedSize;
+                    });
+
+                    if (productIndex != -1){
+                        virtualCart.splice(productIndex,1); //elimin produsul din cos
+                        div_product.style.border="none";
+    
+                        message.style.display='block';
+                        message.innerText='The product is removed from cart'
+                        message.style.color='red';
+    
+                        //dupa ce sterg produsul din cos dispare butonul
+                        button.style.display='none';
+    
+                        localStorage.setItem('virtualCart',JSON.stringify(virtualCart)); //stringify transforma lista de obiecte js intr-o lista de stringuri in format JSON
+                        console.log(virtualCart)
+                    }
+
+                });
+            });
+
+            
+            increaseButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const productId = this.getAttribute('data-product-id');
+                    const quantityInput = document.querySelector(`.quantity[data-product-id="${productId}"]`);
+                    const sizeDropdown = document.querySelector(`.size-dropdown[data-product-id="${productId}"]`);
+                    const selectedSize = sizeDropdown.value;
+                    const message = document.querySelector(`.message[data-product-id="${productId}"]`);
+                    let quantity = parseInt(quantityInput.value, 10) || 1;
+                    
+                    if(!selectedSize){
+                        message.style.display='block';
+                        message.innerText='Please select a size first';
+                        message.style.color='red';
+                        return;
+                    }
+                    message.style.display='none';
+
+                    quantity += 1; // Incrementăm cantitatea
+                    quantityInput.value = quantity;
+                });
+            });
+            
+            decreaseButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const productId = this.getAttribute('data-product-id');
+                    const quantityInput = document.querySelector(`.quantity[data-product-id="${productId}"]`);
+                    const sizeDropdown = document.querySelector(`.size-dropdown[data-product-id="${productId}"]`);
+                    const selectedSize = sizeDropdown.value;
+                    const message = document.querySelector(`.message[data-product-id="${productId}"]`);
+                    let quantity = parseInt(quantityInput.value, 10) || 1;
+
+                    if(!selectedSize){
+                        message.style.display='block';
+                        message.innerText='Please select a size first';
+                        message.style.color='red';
+                        return;
+                    }
+                    message.style.display='none';
+            
+                    if (quantity > 1) {
+                        quantity -= 1; // Decrementăm cantitatea
+                        quantityInput.value = quantity;
+                    }
+                });
+            });
+
+
+            function markedProducts() {
+                var virtualCart = JSON.parse(localStorage.getItem('virtualCart')) || [];
+            
+                // Parcurg fiecare produs din virtualCart
+                virtualCart.forEach(function (cartProduct) {
+                    const productId = cartProduct.id;
+                    const productSize = cartProduct.size;
+            
+                    // Caut produsul în pagină după ID
+                    const productDiv = document.querySelector(`.prod[data-product-id="${productId}"]`);
+                    const sizeDropdown = document.querySelector(`.size-dropdown[data-product-id="${productId}"]`);
+                    const removeButton = document.querySelector(`.btn_remove[data-product-id="${productId}"]`);
+            
+                    if (productDiv) {
+                        // Marchează vizual produsul existent în coș
+                        productDiv.style.border = "3px solid green";
+            
+                        // Setează dimensiunea selectată pentru a fi vizibilă
+                        if (sizeDropdown) {
+                            for (let option of sizeDropdown.options) {
+                                if (option.value === productSize) {
+                                    sizeDropdown.value = productSize;
+                                    break;
+                                }
+                            }
+                        }
+            
+                        // Afișează butonul de "Remove from cart"
+                        if (removeButton) {
+                            removeButton.style.display = 'block';
+                        }
+                    }
+                });
+            }
+
+            markedProducts();
+
+        };
+    </script>
+</body>
+</html>
