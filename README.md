@@ -1,25 +1,25 @@
 <pre>
 # Shoes-Store-eCommerce
 
-A Django-powered online shoe store with a full suite of e-commerce features, including user authentication, dynamic product filtering, a virtual shopping cart, and automated promotional emails.
+A Django-powered online shoe store that showcases core e-commerce functionalities. This project demonstrates skills in backend development, database management, and frontend integration
 
-Features
+ Features
 User Authentication – Login, Signup, Logout, and Profile Management
 Virtual Shopping Cart – Add, remove, and manage products dynamically
-Personalized Email Offers – Automatic promotional emails based on recently viewed products
-Product Filtering – Advanced search filters to help users find the perfect shoes
-Admin Dashboard – Add, edit, and manage products and promotions (admin-only access)
-Contact Page – Integrated user feedback and inquiries system
-Responsive UI – Built with HTML, CSS, and JavaScript for an interactive experience
+Personalized Email Offers – Automated promotional emails based on user preferences
+Product Filtering – Advanced search filters for finding the perfect shoes
+Admin Dashboard – Manage products and promotions (admin-only access)
+Contact Page – Integrated user inquiry system
+PostgreSQL Database – Efficient and scalable data management
+HTML, CSS & JavaScript – Interactive frontend with Django backend
 
 
-Tech Stack
+Technologies Used
 Backend: Django (Python)
 Frontend: HTML, CSS, JavaScript
-Database: PostgreSQL (for efficient and scalable data management)
-Authentication: Django's built-in authentication system
-Email Services: Automated email marketing based on user activity
-Deployment: Can be hosted on platforms like Heroku, AWS, or DigitalOcean
+Database: PostgreSQL
+Email Services: Automated email marketing system
+Deployment: Local development, can be hosted on any cloud platform
 </pre>
 
 
