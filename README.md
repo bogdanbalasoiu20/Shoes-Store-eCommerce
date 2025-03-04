@@ -1,25 +1,24 @@
 <pre>
 # Shoes-Store-eCommerce
 
-A Django-powered online shoe store that showcases core e-commerce functionalities. This project demonstrates skills in backend development, database management, and frontend integration
+A **Django-powered** online **shoe store** that showcases core **e-commerce functionalities**. This project demonstrates skills in **backend development, database management**, and **frontend integration**.  
 
- Features
-User Authentication – Login, Signup, Logout, and Profile Management
-Virtual Shopping Cart – Add, remove, and manage products dynamically
-Personalized Email Offers – Automated promotional emails based on user preferences
-Product Filtering – Advanced search filters for finding the perfect shoes
-Admin Dashboard – Manage products and promotions (admin-only access)
-Contact Page – Integrated user inquiry system
-PostgreSQL Database – Efficient and scalable data management
-HTML, CSS & JavaScript – Interactive frontend with Django backend
+### **Features**  
+- **User Authentication** – **Login, Signup, Logout**, and **Profile Management**  
+- **Virtual Shopping Cart** – Add, remove, and manage products dynamically  
+- **Personalized Email Offers** – Automated **promotional emails** based on user preferences  
+- **Product Filtering** – **Advanced search filters** for finding the perfect shoes  
+- **Admin Dashboard** – Manage **products and promotions** (**admin-only** access)  
+- **Contact Page** – Integrated **user inquiry system**  
+- **PostgreSQL Database** – Efficient and scalable **data management**  
+- **HTML, CSS & JavaScript** – **Interactive frontend** with **Django backend**  
 
-
-Technologies Used
-Backend: Django (Python)
-Frontend: HTML, CSS, JavaScript
-Database: PostgreSQL
-Email Services: Automated email marketing system
-Deployment: Local development, can be hosted on any cloud platform
+### **Technologies Used**  
+- **Backend:** **Django (Python)**  
+- **Frontend:** **HTML, CSS, JavaScript**  
+- **Database:** **PostgreSQL**  
+- **Email Services:** Automated **email marketing system**  
+- **Deployment:** **Local development**, can be hosted on **any cloud platform**  
 </pre>
 
 
