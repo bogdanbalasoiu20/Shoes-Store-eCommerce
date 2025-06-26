@@ -77,20 +77,6 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'OPTIONS': {
-                'options': '-c search_path=django'
-        },
-        'NAME': 'store',   # numele bazei de date
-        'USER': 'bogdan',      # username pt conexiunea la baza de date
-        'PASSWORD': 'bogdan20',
-        'HOST': 'localhost',  # sau IP-ul serverului
-        'PORT': '5432',       # portul implicit pentru PostgreSQL
-    }
-}
-
 
 
 # Password validation
@@ -146,20 +132,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 AUTH_USER_MODEL = 'app.CustomUser'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587 
-EMAIL_USE_TLS = True 
-EMAIL_HOST_USER = 'balasoiu.bogdan@gmail.com'
-EMAIL_HOST_PASSWORD = 'rrwf jmmq kukn tivk'
-DEFAULT_FROM_EMAIL = 'balasoiu.bogdan@gmail.com'
-
-
-
-ADMINS=[
-    ('Admin1','balasoiu.bogdan@gmail.com'),
-    ('Admin2','balasoiu.bogdan20@gmail.com')
-]
 
 
 LOGGING = {
